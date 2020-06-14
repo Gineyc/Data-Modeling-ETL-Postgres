@@ -56,8 +56,9 @@ CREATE TABLE IF NOT EXISTS order_review (
 
 orders_table_create = ("""
 CREATE TABLE IF NOT EXISTS orders (
-    order_id int PRIMARY KEY,
-    customer_id int NOT NULL,
+    order_id varchar PRIMARY KEY,
+    customer_id varchar NOT NULL,
+    order_status varchar NOT NULL,
     order_purchase_timestamp varchar NOT NULL,
     order_approved_at varchar NOT NULL,
     order_delivered_carrier_date varchar NOT NULL,
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 products_table_create = ("""
 CREATE TABLE IF NOT EXISTS products (
-    product_id int PRIMARY KEY,
+    product_id varchar PRIMARY KEY,
     product_category_name varchar,
     product_name_lenght int,
     product_description_lenght int,
@@ -82,7 +83,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 sellers_table_create = ("""
 CREATE TABLE IF NOT EXISTS sellers (
-    seller_id int PRIMARY KEY,
+    seller_id varchar PRIMARY KEY,
     seller_zip_code_prefix int NOT NULL,
     seller_city varchar,
     seller_state varchar
@@ -173,12 +174,13 @@ orders_table_insert = ("""
 INSERT INTO orders (
     order_id ,
     customer_id ,
+    order_status,
     order_purchase_timestamp ,
     order_approved_at ,
     order_delivered_carrier_date ,
     order_delivered_customer_date ,
     order_estimated_delivery_date 
-    ) VALUES (%s,%s,%s,%s,%s,%s,%s)
+    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
 """)
 
 products_table_insert = ("""
@@ -198,11 +200,12 @@ INSERT INTO products (
 
 sellers_table_insert = ("""
 INSERT INTO sellers (
-    seller_id int PRIMARY KEY,
-    seller_zip_code_prefix int NOT NULL,
-    seller_city varchar,
-    seller_state varchar
-    ) VALUES (%s,%s,%s,%s);
+    seller_id, 
+    seller_zip_code_prefix,
+    seller_city,
+    seller_state
+    ) VALUES (%s,%s,%s,%s)
+    ;
 """)
 
 product_category_name_table_insert = ("""
@@ -218,4 +221,4 @@ table_create_lst = [customers_table_create, geolocation_table_create, order_item
 table_drop_lst = [customers_table_drop, geolocation_table_drop, order_item_table_drop,
                   order_payments_table_drop, order_review_table_drop, orders_table_drop, products_table_drop, sellers_table_drop, product_category_name]
 table_insert_lst = [customers_table_insert, geolocation_table_insert, order_item_table_insert, order_payments_table_insert,
-                    order_review_table_insert, orders_table_insert, products_table_insert, products_table_insert, sellers_table_insert, product_category_name_table_insert]
+                    order_review_table_insert, orders_table_insert, products_table_insert, sellers_table_insert, product_category_name_table_insert]
